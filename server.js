@@ -24,4 +24,5 @@ if (process.env.NODE_ENV === 'development') {
     app.use(morgan('dev'))
 };
 app.use('/api/books',require('./routes/bookRoutes'));
+app.use('/api/users',require('./routes/userRoutes'));
 app.listen(port, () => console.log('Server Started On Port ' + port))

@@ -4,17 +4,17 @@ const bookSchema = new mongoose.Schema({
   id: { type: String, default: uuidv4, unique: true },
   volumeInfo: {
     title: { type: String, required: [true,'Please Add field title'] },
-    publishedDate: { type: String, required: [true,'Please Add field publish date'] },
+    publishedDate: { type: String },
     pageCount: { type: Number, required: [true,'Please Add field page count']},
     imageLinks: {
       smallThumbnail: { type: String},
       thumbnail: { type: String, required: [true,'Please Add field image'] },
     },
     language: { type: String, required: [true,'Please Add field language'] },
-    description: { type: String , required: [true,'Please Add field description']},
-    publisher: { type: String, required: [true,'Please Add field publisher'] },
-    authors: [{ type: String, required: [true,'Please Add field authors'] }],
-    categories: [{ type: String, required: [true,'Please Add field categories'] }]
+    description: { type: String },
+    publisher: { type: String },
+    authors: [{ type: String}],
+    categories: [{ type: String }]
   }
 });
 
