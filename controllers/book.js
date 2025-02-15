@@ -2,8 +2,29 @@ const asynchandler = require('express-async-handler')
 const Book = require('../models/Book')
 
 const getBooks = asynchandler(async (req,res) => {
-    const books = await Book.find()
-    res.status(200).json({message:"success",books})
+    let query;
+    let reqQuery = {...req.query}
+    
+    const removeFields = ['select']
+    removeFields.forEach(field => delete reqQuery[field])
+
+    Object.keys(reqQuery).forEach(key => {
+        reqQuery[`volumeInfo.${key}`] = reqQuery[key];
+        delete reqQuery[key];
+    });
+
+    let queryStr = JSON.stringify(reqQuery)
+    
+    queryStr = queryStr.replace(/\b(gt|gte|lt|lte|in)\b/g,match => `$${match}`)
+    query = Book.find(JSON.parse(queryStr))
+
+    if (req.query.select) {
+        const fields = req.query.select.split(',').map(field => `volumeInfo.${field}`).join(' ');
+        query = query.select(fields);
+    }
+
+    const books = await query
+    res.status(200).json({message:"success",count:books.length,books})
 })
 
 const setBook = asynchandler(async (req,res) => {

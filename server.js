@@ -6,7 +6,8 @@ const cors = require('cors')
 
 const dotenv = require('dotenv').config({path:'./config/.env'});
 
-const connectDb = require('./config/db')
+const connectDb = require('./config/db');
+const { errorHandler } = require('./middlewares/errorMiddleware');
 
 
 connectDb()
@@ -25,4 +26,5 @@ if (process.env.NODE_ENV === 'development') {
 };
 app.use('/api/books',require('./routes/bookRoutes'));
 app.use('/api/users',require('./routes/userRoutes'));
+app.use(errorHandler)
 app.listen(port, () => console.log('Server Started On Port ' + port))
